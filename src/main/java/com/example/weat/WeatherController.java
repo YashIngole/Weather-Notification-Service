@@ -1,5 +1,6 @@
 package com.example.weat;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,24 +18,41 @@ public class WeatherController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/weather")
-    public List<String> getWeatherForCities() {
-        String apiKey = "75489b6e94cec5e9f80c09786521e786";
-        List<String> weatherInfoList = new ArrayList<>();
+   @GetMapping("/weather")
+public String getWeatherForCities() {
+    String apiKey = Constants.API_KEY;
+    List<String> weatherInfoList = new ArrayList<>();
 
-        for (String city : CITIES) {
-            String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
-            RestTemplate restTemplate = new RestTemplate();
-            String result = restTemplate.getForObject(url, String.class);
-            weatherInfoList.add(result);
-        }
+    for (String city : CITIES) {
+        String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+        RestTemplate restTemplate = new RestTemplate();
+        String jsonResult = restTemplate.getForObject(url, String.class);
+        JSONObject jsonObject = new JSONObject(jsonResult);
 
-        // send the weather information as an email
-        String to = "20010970@ycce.in"; // replace with the recipient email address
-        String subject = "Weather Information";
-        String body = String.join("\n\n", weatherInfoList);
-        emailService.sendEmail(to, subject, body);
+        String cityName = jsonObject.getString("name");
+        JSONObject main = jsonObject.getJSONObject("main");
+        double temperature = main.getDouble("temp");
+        double humidity = main.getDouble("humidity");
+        JSONObject wind = jsonObject.getJSONObject("wind");
+        double windSpeed = wind.getDouble("speed");
 
-        return weatherInfoList;
+        String weatherInfo = String.format("%-10s %-10s %-10s %-10s ", cityName, temperature, humidity, windSpeed);
+        weatherInfoList.add(weatherInfo);
     }
+
+    // format weather information as a table
+    StringBuilder sb = new StringBuilder();
+    sb.append(String.format("%-10s %-10s %-10s %-10s \n", "City", "Temperature", "Humidity", "Wind Speed"));
+    for (String weatherInfo : weatherInfoList) {
+        sb.append(weatherInfo).append("\n");
+    }
+
+    // send the weather information as an email
+    String to = Constants.EMAIL2; // replace with the recipient email address
+    String subject = "Weather Information";
+    String body = sb.toString();
+    emailService.sendEmail(to, subject, body);
+
+    return sb.toString();
+}
 }
