@@ -26,7 +26,7 @@ public class WeatherController {
         List<String> weatherInfoList = new ArrayList<>();
 
         for (String city : CITIES) {
-            String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+            String url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric"; // Add "&units=metric" to the URL to get the temperature in Celsius
             RestTemplate restTemplate = new RestTemplate();
             String jsonResult = restTemplate.getForObject(url, String.class);
             JSONObject jsonObject = new JSONObject(jsonResult);
@@ -38,7 +38,7 @@ public class WeatherController {
             JSONObject wind = jsonObject.getJSONObject("wind");
             double windSpeed = wind.getDouble("speed");
 
-            String weatherInfo = String.format("%-10s %-10s %-10s %-10s ", cityName, temperature, humidity, windSpeed);
+            String weatherInfo = String.format("<td>%s</td><td>%.2f °C</td><td>%.2f %%</td><td>%.2f m/s</td>", cityName, temperature, humidity, windSpeed);
             weatherInfoList.add(weatherInfo);
         }
 
@@ -47,9 +47,9 @@ public class WeatherController {
         sb.append("<html><body>");
         sb.append("<h2>Weather Information</h2>");
         sb.append("<table>");
-        sb.append("<tr><th>City</th><th>Temperature</th><th>Humidity</th><th>Wind Speed</th></tr>");
+        sb.append("<tr><th style='font-size: 20px; padding: 10px;'>City</th><th style=' font-size: 20px; padding: 10px;'>Temperature</th><th style='font-size: 20px; padding: 10px;'>Humidity</th><th style='font-size: 20px; padding: 10px; '>Wind Speed</th></tr>");
         for (String weatherInfo : weatherInfoList) {
-            sb.append("<tr>").append(weatherInfo).append("</tr>");
+            sb.append("<tr style = 'font-size: 20px; padding: 20px;'>").append(weatherInfo).append("</tr>");
         }
         sb.append("</table>");
         sb.append("</body></html>");
