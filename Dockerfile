@@ -1,5 +1,5 @@
                                                                                                                                                                 
-# Fetching latest version of Java
+# Fetches latest version of Java
 FROM openjdk:17-alpine
 
 # Setting up work directory
@@ -13,4 +13,4 @@ COPY target/weat-0.0.1-SNAPSHOT.jar /app
 EXPOSE 8080
 
 # Starting the application
-CMD ["java", "-jar", "weat-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "weat-0.0.1-SNAPSHOT.jar"] 
