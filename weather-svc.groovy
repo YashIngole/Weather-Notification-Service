@@ -13,7 +13,8 @@ pipeline {
         stage ('running docker'){
             steps{
                  def dockerImage = docker.build('springimagev6')
-                 sh 'docker tag abb5ea8dee97 asia-south1-docker.pkg.dev/smart-bridge-383909/springimage2/springimagev6'
+                 sh 'docker tag cc6ab1b51c68 asia-south1-docker.pkg.dev/smart-bridge-383909/springimage3/springimagev10'
+                 sh 'docker push asia-south1-docker.pkg.dev/smart-bridge-383909/springimage3/springimagev10:latest '
 
             }
         }
@@ -22,4 +23,4 @@ pipeline {
             sh 'gcloud run deploy springimagev2 --image gcr.io/your-project-id/your-image-name:your-tag-name --platform managed --region your-region'
         }
     }
-}
+}//check
