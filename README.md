@@ -1,8 +1,11 @@
-# Weather-Notification-Service
+#Weather Notification Service Documentation
 
 Introduction
-The application is responsible for fetching weather data for cities like Nagpur, Pune, Mumbai, Bangalore, Chennai, and Kolkata. It periodically sends email notifications to recipients containing weather parameters such as temperature, wind speed, and humidity for these cities. The application is containerized using Docker and deployed on Google Cloud Run for easy scalability and accessibility.
+
+This documentation provides an overview of the Java Web Spring Boot application. The application is responsible for fetching weather data for cities like Nagpur, Pune, Mumbai, Bangalore, Chennai, and Kolkata. It periodically sends email notifications to recipients containing weather parameters such as temperature, wind speed, and humidity for these cities. The application is containerized using Docker and deployed on Google Cloud Run for easy scalability and accessibility.
+
 Architecture Overview
+
 The architecture of application involves several components working together to achieve the desired functionality. The key components are as follows:
 1.	Java Web Spring Boot Application: This is the core of application, responsible for fetching weather data and generating email notifications in HTML format.
 2.	Docker: The application is containerized using Docker, which allows for easy deployment and scalability. The Docker image is built using the docker build command and pushed to the Artifact Registry of Google Cloud using the docker push command.
@@ -12,6 +15,7 @@ The architecture of application involves several components working together to 
 
 
 Deployment Steps
+
 1.	Build Docker Image:
 •	Execute the docker build command to build a Docker image for application:
 
@@ -41,8 +45,6 @@ docker push asia-south1-docker.pkg.dev/smart-bridge-383909/springimage3/springim
  (https://springimagev10-67hq3ekr3q-uc.a.run.app/weather).
 
 •	Configure the schedule to execute the job every one hour.
-
-
 
 
 5.	Enable Continuous Deployment with Cloud Build:
